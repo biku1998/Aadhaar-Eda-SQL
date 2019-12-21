@@ -1,0 +1,449 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>EDA SQL</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  /* width: 150px; */
+  /* height: auto;
+  width: auto; */
+  max-width: 100%;
+  height: auto;
+}
+code {
+  font-family: monospace;
+  font-size: 20px;
+  color: black;
+}
+    </style>
+  </head>
+  <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+        </div>
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+          <h3>Exploratory data analysis of Aadhaar Enrollment Data Using SQL</h3>
+        </div>
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+          <a href="#overview" class="mdl-layout__tab is-active">EDA</a>
+          <a href="#features" class="mdl-layout__tab">Resources</a>
+          <!-- <a href="#features" class="mdl-layout__tab">Details</a>
+          <a href="#features" class="mdl-layout__tab">Technology</a>
+          <a href="#features" class="mdl-layout__tab">FAQ</a> -->
+          <!-- <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="add">
+            <i class="material-icons" role="presentation">add</i>
+            <span class="visuallyhidden">Add</span>
+          </button> -->
+        </div>
+      </header>
+      <main class="mdl-layout__content">
+        <!-- Overview tab-->
+        <div class="mdl-layout__tab-panel is-active" id="overview">
+          <h3>Let's see how our dataset looks like </h3>
+          <img src="Resources/DataView.jpg" alt="Data view">
+
+          <br><br>
+
+          <h3>Observations </h3>
+
+          <ul>
+            <!--############################################################################## -->
+            <h4><li>Which registrar has done most Aadhar card Appointment ?</li></h4>
+
+
+            <code>Select Registrar,Round((Count(ID)/(Select Count(*) From Data))*100,2) as Cnt From data Group By Registrar Order by 2 desc            </code>
+            <br><br>
+            <img src="Resources/chart_1.jpg" alt="Top famous Categories">
+
+            <!--############################################################################## -->
+            <h4><li>The reason for above can be more no of Enrolment agency in a particular Registrar. Let’s see the distribution of Enrolment Agency in each Registrar.</li></h4>
+            <code>SELECT d1.Registrar, (Select Count(d2.[Enrolment Agency]) From Data d2 Where d2.Registrar = d1.Registrar) AS [No of Enrol Agency] FROM Data AS d1 GROUP BY d1.Registrar ORDER BY 2 DESC;
+            </code>
+            <img src="Resources/chart_2.jpg" alt="Average ratings">
+
+          </code>
+<br><br>
+
+          <!--############################################################################## -->
+          <h4><li>Let’s see which states have most Aadhar Registrations.</li></h4>
+          <code>Select State ,Round((Count(ID)/(Select Count(ID) From Data))*100,2) as [% of Aadhar reg]  From Data Group By State Order by 2 desc;
+            </code>
+            <br><br>
+          <img src="Resources/chart_3.jpg" alt="Average ratings">
+
+          <!--############################################################################## -->
+          <h4><li>Let’s see the sex ratio of Aadhar enrolment applicants.</li></h4>
+          <code>Select Gender,Round((Count(ID)/(Select Count(ID) From Data))*100,5) as [No of applicants] From Data Group By Gender
+            </code>
+            <br><br>
+          <img src="Resources/chart_4.jpg" alt="Average ratings">
+          </ul>
+
+
+          <!--############################################################################## -->
+          <h4><li>Let’s see Age distribution across the dataset. Which age group has most no of Aadhar enrolment Applicants.</li></h4>
+          <code>
+            Select (Select Count(*) From Data d2 Where d2.Age >= 0 AND d2.Age <=15) as [Child (0-15)], (Select Count(*) From Data d2 Where d2.Age > 15 AND d2.Age <= 22) as [Teen (15-22)], (Select Count(*) From Data d2 Where d2.Age > 22 AND d2.Age <= 35) as [Youth (22-35)], (Select Count(*) From Data d2 Where d2.Age > 35 AND d2.Age <=55) as [Adult (35-55)], (Select Count(*) From Data d2 Where d2.Age > 55 AND d2.Age <=118) as [Senior_citizen (55-118)] From data d1 Where d1.ID = 1
+            </code>
+            <br><br>
+          <img src="Resources/chart_5.jpg" alt="Average ratings">
+          </ul>
+
+          <!--############################################################################## -->
+          <h4><li>Comparision of Female Aadhar Enrolments in different Districts.</li></h4>
+          <code>
+            Select District,Count(*) as Cnt From Data Where Gender  = "F" Group By District,Gender order by 3
+          </code><br><br>
+          <img src="Resources/chart_6.jpg" alt="Average ratings">
+          </ul>
+          <!--############################################################################## -->
+          <h4><li>Who are the top 30 Enrolment Agency that have generated most number of Aadhaar’s.</li></h4>
+          <code>
+            Select TOP 30 [Enrolment Agency], Round((Sum([Aadhaar Generated])/(Select Sum([Aadhaar Generated])From Data))*100,2) as total_adhar_generated From data
+            -	Group By [Enrolment Agency] Order by 2 DESC;
+
+          </code><br><br>
+          <img src="Resources/chart_7.jpg" alt="Average ratings">
+          </ul>
+          <!--############################################################################## -->
+          <h4><li>TOP 30 Enrolments Agency who has large no of Enrolment rejections.</li></h4>
+          <code>
+            Select Top 30 [Enrolment Agency] , Round((Sum([Enrolment Rejected])/(Select Sum([Enrolment Rejected])
+            From Data))*100,2) as [% of Enrolment Rejection]
+            From Data Group By [Enrolment Agency] Order by 2 desc;
+
+
+          </code><br><br>
+          <img src="Resources/chart_8.jpg" alt="Average ratings">
+          </ul>
+
+          <!--############################################################################## -->
+          <h4><li>State wise Aadhaar card enrolment applicants.</li></h4>
+          <code>
+            Select State, Round((Count(ID)/(Select Count(ID) From Data))*100,2) as Per_of_App From data Group By State;
+          </code><br><br>
+          <img src="Resources/chart_9.jpg" alt="reviews downloads">
+          </ul>
+
+
+          <!--############################################################################## -->
+          <h4><li>State wise accepted applications Percentage.</li></h4>
+          <code>
+            	SELECT d1.State,(Select Count(ID) From
+            	 Data d2 Where d2.State = d1.State)
+            	 as no_of_applicants,Round
+            	(((Select Sum([Enrolment Rejected])
+            	From Data d2 Where d2.State = d1.State)/no_of_applicants)*100,2)
+            	 as per_of_rejected,
+            	 (100 - per_of_rejected)
+              as per_of_accepted
+              	From Data d1 Group By d1.State;
+
+          </code><br><br>
+          <img src="Resources/chart_10.jpg" alt="reviews downloads">
+          </ul>
+
+          <!--############################################################################## -->
+          <h4><li>Aadhar card generation % state wise.</li></h4>
+          <code>
+            Select State,Round((Sum([Aadhaar Generated])/(Select Sum([Aadhaar Generated])From
+            Data))*100,2) as [% of Aadhar Generated]  From Data Group By State order by 2 desc;
+
+
+          </code><br><br>
+          <img src="Resources/chart_11.jpg" alt="reviews downloads">
+          </ul>
+
+
+          <!--############################################################################## -->
+          <h4><li>Percentage of Email  and phone number provided in  total Aadhar generated till now.</li></h4>
+          <code>
+            Select Sum([Residents providing Email])  as total_email_proveded ,
+	           Sum([Aadhaar Generated]) as total_aadhr_genreated
+	            From Data
+            </code><br>
+            <code>
+              Select Sum([Residents providing mobile number])  as total_mobile_proveded ,
+               Sum([Aadhaar Generated]) as total_aadhr_genreated
+                From Data
+              </code>
+            <br>
+          <img src="Resources/chart_12.jpg" alt="reviews downloads">
+          <br>
+          <img src="Resources/chart_13.jpg" alt="reviews downloads">
+          </ul>
+
+          <!--############################################################################## -->
+          <h4><li>Let’s see % of Aadhar generated age wise.</li></h4>
+          <code>
+            Select [Age_group],Sum([Aadhaar generated]) as [No_of_Aadhar_Generated] From(
+              	SELECT Age, [Aadhaar Generated],
+              	Switch(
+              	    [Age] > 0 AND [Age] <= 15 , "Child",
+              	    [Age] > 15 AND [Age] <= 22 , "Teen",
+              	    [Age] > 22 AND [Age] <= 35 , "Youth",
+              	    [Age] > 35 AND [Age] <= 55 , "Adult",
+              	    [Age] > 55 AND [Age] <= 118 , "Senior_Citizen",
+              	    [Age] = 0 , "Invalid_Age-0"
+              	    ) AS Age_group
+            	       FROM Data)
+              	Group By [Age_group]
+
+
+          </code><br><br>
+          <img src="Resources/chart_15.jpg" alt="reviews downloads">
+          </ul>
+
+          <!--############################################################################## -->
+          <h4><li>Let’s see % of Aadhar generated sex wise.</li></h4>
+          <code>
+            Select gender,Sum([Aadhaar generated]) as [no of aadhar generated] From data Group By gender
+          </code><br><br>
+          <img src="Resources/chart_14.jpg" alt="reviews downloads">
+          </ul>
+
+          <!--############################################################################## -->
+          <h4><li>Gender Ratio In each age group.</li></h4>
+          <code>
+            SELECT Age_group, Gender, Count(*) AS Cnt
+            FROM (SELECT Age, [Aadhaar Generated],Gender, Switch( [Age] > 0 AND [Age] <= 15 , "Child",     [Age] > 15 AND [Age] <= 22 , "Teen",     [Age] > 22 AND [Age] <= 35 , "Youth",     [Age] > 35 AND [Age] <= 55 , "Adult",     [Age] > 55 AND [Age] <= 118 , "Senior_Citizen",     [Age] = 0 , "Unknown-age"     ) AS Age_group FROM Data)  AS [%$##@_Alias]
+            GROUP BY Age_group, Gender;
+
+          </code><br><br>
+          <img src="Resources/chart_16.jpg" alt="reviews downloads">
+          </ul>
+
+
+
+
+
+          <!-- <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white">
+              <i class="material-icons">play_circle_filled</i>
+            </header>
+            <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+              <div class="mdl-card__supporting-text">
+                <h4>Features</h4>
+                Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse.
+              </div>
+              <div class="mdl-card__actions">
+                <a href="#" class="mdl-button">Read our features</a>
+              </div>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn1">
+              <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
+              <li class="mdl-menu__item">Lorem</li>
+              <li class="mdl-menu__item" disabled>Ipsum</li>
+              <li class="mdl-menu__item">Dolor</li>
+            </ul>
+          </section>
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+              <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                <h4 class="mdl-cell mdl-cell--12-col">Details</h4>
+                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                  <div class="section__circle-container__circle mdl-color--primary"></div>
+                </div>
+                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                  <h5>Lorem ipsum dolor sit amet</h5>
+                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
+                </div>
+                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                  <div class="section__circle-container__circle mdl-color--primary"></div>
+                </div>
+                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                  <h5>Lorem ipsum dolor sit amet</h5>
+                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
+                </div>
+                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                  <div class="section__circle-container__circle mdl-color--primary"></div>
+                </div>
+                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                  <h5>Lorem ipsum dolor sit amet</h5>
+                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
+                </div>
+              </div>
+              <div class="mdl-card__actions">
+                <a href="#" class="mdl-button">Read our features</a>
+              </div>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn2">
+              <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn2">
+              <li class="mdl-menu__item">Lorem</li>
+              <li class="mdl-menu__item" disabled>Ipsum</li>
+              <li class="mdl-menu__item">Dolor</li>
+            </ul>
+          </section>
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+              <div class="mdl-card__supporting-text">
+                <h4>Technology</h4>
+                Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse. Pariatur occaecat nisi laboris tempor laboris eiusmod qui id Lorem esse commodo in. Exercitation aute dolore deserunt culpa consequat elit labore incididunt elit anim.
+              </div>
+              <div class="mdl-card__actions">
+                <a href="#" class="mdl-button">Read our features</a>
+              </div>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn3">
+              <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn3">
+              <li class="mdl-menu__item">Lorem</li>
+              <li class="mdl-menu__item" disabled>Ipsum</li>
+              <li class="mdl-menu__item">Dolor</li>
+            </ul>
+          </section>
+          <section class="section--footer mdl-color--white mdl-grid">
+            <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+              <div class="section__circle-container__circle mdl-color--accent section__circle--big"></div>
+            </div>
+            <div class="section__text mdl-cell mdl-cell--4-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+              <h5>Lorem ipsum dolor sit amet</h5>
+              Qui sint ut et qui nisi cupidatat. Reprehenderit nostrud proident officia exercitation anim et pariatur ex.
+            </div>
+            <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+              <div class="section__circle-container__circle mdl-color--accent section__circle--big"></div>
+            </div>
+            <div class="section__text mdl-cell mdl-cell--4-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+              <h5>Lorem ipsum dolor sit amet</h5>
+              Qui sint ut et qui nisi cupidatat. Reprehenderit nostrud proident officia exercitation anim et pariatur ex.
+            </div>
+          </section> -->
+        </div>
+
+        <!-- Features tab-->
+        <div class="mdl-layout__tab-panel" id="features">
+          <ul>
+            <h3><li>This is a research project given in the SQL Module</li></h3>
+            <h3><li><a href="https://www.kaggle.com/knightking007/aadhar" target="_blank">Dataset used</li></h3>
+              <!-- <h3><li><a href="https://github.com/google/material-design-lite/tree/mdl-1.x/templates/text-only" target="_blank">web template credits</li></h3> -->
+                <h3><li><a href="https://ivyproschool.com/" target="_blank">Course Content - Ivy</li></h3>
+          </ul>
+
+
+          <!-- <section class="section--center mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+              <h4>Features</h4>
+              Minim duis incididunt est cillum est ex occaecat consectetur. Qui sint ut et qui nisi cupidatat. Reprehenderit nostrud proident officia exercitation anim et pariatur ex.
+              <ul class="toc">
+                <h4>Contents</h4>
+                <a href="#lorem1">Lorem ipsum</a>
+                <a href="#lorem2">Lorem ipsum</a>
+                <a href="#lorem3">Lorem ipsum</a>
+                <a href="#lorem4">Lorem ipsum</a>
+                <a href="#lorem5">Lorem ipsum</a>
+              </ul>
+
+              <h5 id="lorem1">Lorem ipsum dolor sit amet</h5>
+              Excepteur et pariatur officia veniam anim culpa cupidatat consequat ad velit culpa est non.
+              <ul>
+                <li>Nisi qui nisi duis commodo duis reprehenderit consequat velit aliquip.</li>
+                <li>Dolor consectetur incididunt in ipsum laborum non et irure pariatur excepteur anim occaecat officia sint.</li>
+                <li>Lorem labore proident officia excepteur do.</li>
+              </ul>
+
+              <p>
+                Sit qui est voluptate proident minim cillum in aliquip cupidatat labore pariatur id tempor id. Proident occaecat occaecat sint mollit tempor duis dolor cillum anim. Dolore sunt ea mollit fugiat in aliqua consequat nostrud aliqua ut irure in dolore. Proident aliqua culpa sint sint exercitation. Non proident occaecat reprehenderit veniam et proident dolor id culpa ea tempor do dolor. Nulla adipisicing qui fugiat id dolor. Nostrud magna voluptate irure veniam veniam labore ipsum deserunt adipisicing laboris amet eu irure. Sunt dolore nisi velit sit id. Nostrud voluptate labore proident cupidatat enim amet Lorem officia magna excepteur occaecat eu qui. Exercitation culpa deserunt non et tempor et non.
+              </p>
+              <p>
+                Do dolor eiusmod eu mollit dolore nostrud deserunt cillum irure esse sint irure fugiat exercitation. Magna sit voluptate id in tempor elit veniam enim cupidatat ea labore elit. Aliqua pariatur eu nulla labore magna dolore mollit occaecat sint commodo culpa. Eu non minim duis pariatur Lorem quis exercitation. Sunt qui ex incididunt sit anim incididunt sit elit ad officia id.
+              </p>
+              <p id="lorem2">
+                Tempor voluptate ex consequat fugiat aliqua. Do sit et reprehenderit culpa deserunt culpa. Excepteur quis minim mollit irure nulla excepteur enim quis in laborum. Aliqua elit voluptate ad deserunt nulla reprehenderit adipisicing sint. Est in eiusmod exercitation esse commodo. Ea reprehenderit exercitation veniam adipisicing minim nostrud. Veniam dolore ex ea occaecat non enim minim id ut aliqua adipisicing ad. Occaecat excepteur aliqua tempor cupidatat aute dolore deserunt ipsum qui incididunt aliqua occaecat sit quis. Culpa sint aliqua aliqua reprehenderit veniam irure fugiat ea ad.
+              </p>
+              <p>
+                Eu minim fugiat laborum irure veniam Lorem aliqua enim. Aliqua veniam incididunt consequat irure consequat tempor do nisi deserunt. Elit dolore ad quis consectetur sint laborum anim magna do nostrud amet. Ea nulla sit consequat quis qui irure dolor. Sint deserunt excepteur consectetur magna irure. Dolor tempor exercitation dolore pariatur incididunt ut laboris fugiat ipsum sunt veniam aute sunt labore. Non dolore sit nostrud eu ad excepteur cillum eu ex Lorem duis.
+              </p>
+              <p>
+                Id occaecat velit non ipsum occaecat aliqua quis ut. Eiusmod est magna non esse est ex incididunt aute ullamco. Cillum excepteur sint ipsum qui quis velit incididunt amet. Qui deserunt anim enim laborum cillum reprehenderit duis mollit amet ad officia enim. Minim sint et quis aliqua aliqua do minim officia dolor deserunt ipsum laboris. Nulla nisi voluptate consectetur est voluptate et amet. Occaecat ut quis adipisicing ad enim. Magna est magna sit duis proident veniam reprehenderit fugiat reprehenderit enim velit ex. Ullamco laboris culpa irure aliquip ad Lorem consequat veniam ad ipsum eu. Ipsum culpa dolore sunt officia laborum quis.
+              </p>
+
+              <h5 id="lorem3">Lorem ipsum dolor sit amet</h5>
+
+              <p id="lorem4">
+                Eiusmod nulla aliquip ipsum reprehenderit nostrud non excepteur mollit amet esse est est dolor. Dolore quis pariatur sit consectetur veniam esse ullamco duis Lorem qui enim ut veniam. Officia deserunt minim duis laborum dolor in velit pariatur commodo ullamco eu. Aute adipisicing ad duis labore laboris do mollit dolor cillum sunt aliqua ullamco. Esse tempor quis cillum consequat reprehenderit. Adipisicing proident anim eu sint elit aliqua anim dolore cupidatat fugiat aliquip qui.
+              </p>
+              <p id="lorem5">
+                Nisi eiusmod esse cupidatat excepteur exercitation ipsum reprehenderit nostrud deserunt aliqua ullamco. Anim est irure commodo eiusmod pariatur officia. Est dolor ipsum excepteur magna aliqua ad veniam irure qui occaecat eiusmod aute fugiat commodo. Quis mollit incididunt amet sit minim velit eu fugiat voluptate excepteur. Sit minim id pariatur ex cupidatat cupidatat nostrud nostrud ipsum.
+              </p>
+              <p>
+                Enim ea officia excepteur ad veniam id reprehenderit eiusmod esse mollit consequat. Esse non aute ullamco Lorem aliqua qui dolore irure eiusmod aute aliqua proident labore aliqua. Ipsum voluptate voluptate exercitation laborum deserunt nulla elit aliquip et minim ex veniam. Duis cupidatat aute sunt officia mollit dolor ad elit ad aute labore nostrud duis pariatur. In est sint voluptate consectetur velit ea non labore. Ut duis ea aliqua consequat nulla laboris fugiat aute id culpa proident. Minim eiusmod laboris enim Lorem nisi excepteur mollit voluptate enim labore reprehenderit officia mollit.
+              </p>
+              <p>
+                Cupidatat labore nisi ut sunt voluptate quis sunt qui ad Lorem esse nisi. Ex esse velit ullamco incididunt occaecat dolore veniam tempor minim adipisicing amet. Consequat in exercitation est elit anim consequat cillum sint labore cillum. Aliquip mollit laboris ad labore anim.
+              </p>
+            </div>
+          </section> -->
+        </div>
+
+      </main>
+    </div>
+    <a href="https://github.com/biku1998" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">Github link</a>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </body>
+</html>
